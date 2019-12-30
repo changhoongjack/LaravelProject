@@ -27,6 +27,6 @@ class ToMark extends Model
      'pagePhoto',
      'pageContent',
      'storybookID',
-     'ProductionID',
+     'languageCode',
     ];
 }

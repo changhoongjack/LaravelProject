@@ -28,9 +28,8 @@
                         <th>
                             {{ trans('global.user.fields.email') }}
                         </th>
-                        <th>
-                            {{ trans('global.user.fields.email_verified_at') }}
-                        </th>
+                    
+                        
                         <th>
                             {{ trans('global.user.fields.roles') }}
                         </th>
@@ -51,9 +50,7 @@
                             <td>
                                 {{ $user->email ?? '' }}
                             </td>
-                            <td>
-                                {{ $user->email_verified_at ?? '' }}
-                            </td>
+                            
                             <td>
                                 @foreach($user->roles as $key => $item)
                                     <span class="badge badge-info">{{ $item->title }}</span>
@@ -71,7 +68,7 @@
                                     </a>
                                 @endcan
                                 @can('user_delete')
-                                    <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                    <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" onsubmit="return confirm('{{ trans('Are you sure?') }}');" style="display: inline-block;">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">

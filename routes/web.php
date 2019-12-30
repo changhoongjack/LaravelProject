@@ -1,8 +1,8 @@
 <?php
 
-Route::redirect('/', '/login');
+Route::redirect('/', 'login');
 
-Route::redirect('/home', '/admin');
+Route::redirect('/home', 'admin');
 
 Auth::routes(['register' => false]);
 
@@ -25,15 +25,15 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 
     Route::resource('products', 'ProductsController');
 
-    //Route::get('view', 'ContentsController@view');
-
     Route::resource('Contents', 'ContentsController');
 
     Route::resource('ToMarks', 'ToMarkController');
 
     Route::resource('Feedback', 'FeedbackController');
 
-
+    Route::resource('myProfile', 'MyProfileController');
     
+    Route::resource('languageAvailability', 'langAvailabilityController');
+
 
 });

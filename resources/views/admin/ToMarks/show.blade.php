@@ -45,8 +45,8 @@
                             </td>
                             <td >
                                 <!-- ================ display image in table and onclick to zoom in to view ============= -->
-                                <img src="data:image/jpg;base64, {{ chunk_split(base64_encode($tomark->pagePhoto)) }}" style="width:50%; height:30% ;cursor:pointer" 
-                                        onclick="onClick(this)" class="w3-hover-opacity height="100" width="100"/> 
+                                    <img src="data:image/jpg;base64, {{ ($tomark->pagePhoto) }}" style="width:512; height:512 ;cursor:pointer" 
+                                        onclick="onClick(this)" class="w3-hover-opacity height="100" width="100"/>
 
                                         <div id="modal01" class="w3-modal" onclick="this.style.display='none'">
                                         <span class="w3-button w3-hover-red w3-xlarge w3-display-topright">&times;</span>
@@ -74,9 +74,11 @@
                 
             </table>
 
-            <form action="{{ route("admin.ToMarks.store" , $tomark->storybookID ) }}" method="POST"  >         
+            <form action="{{ route("admin.ToMarks.update" , $tomark->storybookID ) }}" method="POST"  >         
            
-                    @csrf   
+            {{csrf_field()}}
+            {{ method_field('PATCH') }} 
+                 
                      <div class="form-group">
                      <label for="comments">Comment:</label>
                      <textarea class="form-control" rows="5" id="comments" name="Comments"></textarea>
@@ -86,11 +88,11 @@
 
                     <div class="text-right mb-3">
 
-                        <input name="StatusAPP" value="Approved" type="hidden">
-                        <button class="btn btn-success " type="submit" name='Status' value='Approve'> Approve </button>
+                        <input name="StatusAPP" value="Published" type="hidden">
+                        <button class="btn btn-success " type="submit" name='Status' value='Approve'> Approve <i class="material-icons" style="width:30px">done_all</i></button>
 
                         <input name="StatusREJ" value="Rejected" type="hidden">
-                        <button class="btn btn-danger fa fa-close" style="width:50px" type="submit" name='Status' value='Reject'> Reject </button>
+                        <button class="btn btn-danger"  type="submit" name='Status' value='Reject' onclick="return confirm('Are you sure you want to reject this book?');" > Reject<i class="material-icons" style="width:40px">clear</i> </button>
                        
                     </div>
 

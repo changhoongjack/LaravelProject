@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+
 use Session;
- use Request;
+use Request;
 //use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Builder;
+
 use Auth;
 //use Illuminate\Support\Facades\Request;
 // use App\Http\Requests\MassDestroyProductRequest;
@@ -25,24 +29,6 @@ class ToMarkController extends Controller
     {
          abort_unless(\Gate::allows('tomark_access'), 403);
 
-         //$tomarks = ToMark::all();
-
-            //$data=$request->input();
-            //Session::put('test', $request);
-
-            //session()->put('test', $request);
-            //$request->flash();
-            // $input = $request->all(); 
-            
-            // print_r($input); 
-
-            // dd($request->all());
-
-            
-         //dd(session()->all());  //to show all the data store in sessions for testing purpose
-
-         //dd(array_keys($tomarks->toArray()));
-
         return view('admin.ToMarks.index');
     }
 
@@ -53,44 +39,29 @@ class ToMarkController extends Controller
         return view('admin.ToMarks.create');
     }
 
-    public function store(StoreApproveRequest $request )
+    public function store(StoreApproveRequest $request)
     {
         abort_unless(\Gate::allows('tomark_create'), 403);
 
         if ($request->get('Status') == 'Approve'){
 
             Session::get('content');
-            $key = Session::get('key');
-
-            // $value = $request->session()->all();
-            // Session::put('value', $value);
-            // //dd(Session::get('value'));
-            // $check = Storybooklibrary::create($request->all('Remarks'));
-            // $title = Session(['content' =>request()->all()]);
-            //$value ->save();
-            // dd(session()->all());
-            // dd($check);
-
+            $key = Session::get('storybookID');
+            $languageCode = Session::get('lang');
+            
             $id = Auth::user()->name;
             $update = Request::all();
 
+            
             $content = Content::find($key);
             $content->Comments = $update['Comments'];
             $content->status = $update['StatusAPP'];
             $content->Reviewer = $id;
             $content->save();
 
-           
-            
-          
-
-
-
-            
         }
 
         else if ($request->get('Status') == 'Reject'){
-
 
             Session::get('content');
             $key = Session::get('key');
@@ -104,16 +75,8 @@ class ToMarkController extends Controller
             $content->Reviewer = $id;
             $content->save();
 
-            
-
-             //dd(session()->all());  //to show all the data store in sessions for testing purpose
-
-             //dd($request->all());
-
         }
-        
-
-         return redirect()->route('admin.ToMarks.index');
+         return redirect()->route('admin.Contents.index');
         
     }
 
@@ -124,38 +87,72 @@ class ToMarkController extends Controller
         return view('admin.Contents.edit', compact('content'));
     }
 
-    public function update(UpdateApproveRequest $request, Tomark $tomarks)
+    public function update(UpdateApproveRequest $request)
     {
         abort_unless(\Gate::allows('tomark_edit'), 403);
 
-        //$tomarks->update($request->all()); 
+        if ($request->get('Status') == 'Approve'){
 
-        // $value = Session::get('key');
+            Session::get('content');
+            $storybookID = Session::get('storybookID');
+            $languageCode = Session::get('lang');
+            
+            $id = Auth::user()->name;
+            $update = Request::all();
 
-        // $tomarks = Content::where('storybookID' , $value )->get()->update();
+            $content1 = Content::where('storybookID', $storybookID)->where('languageCode', $languageCode)->update(['Comments' => $update['Comments'], 'status' => $update['StatusAPP'], 'Reviewer' => $id]);
 
+            // //$content = Content::where('storybookID',$key)->where('languageCode', $languageCode)->get();
+           
+            // $content1->Comments = $update['Comments'];
+            // $content1->status = $update['StatusAPP'];
+            // $content1->Reviewer = $id;
+
+           // dd($content1);
+           // $content1->save();
+            
+            // Content::where('languageCode', $languageCode)
+            //         ->first()
+            //         ->update(['Comments' => $update['Comments'], 'status' => $update['StatusAPP'], 'Reviewer' => $id]);
+     
+
+        }
+
+        else if ($request->get('Status') == 'Reject'){
+
+            Session::get('content');
+           $storybookID = Session::get('storybookID');
+            $languageCode = Session::get('lang');
+            
+            $id = Auth::user()->name;
+            $update = Request::all();
+
+            $content1 = Content::where('storybookID', $storybookID)->where('languageCode', $languageCode)->update(['Comments' => $update['Comments'], 'status' => $update['StatusREJ'], 'Reviewer' => $id]);
+            
+
+        }
         return redirect()->route('admin.Contents.index');
     }
 
-    public function show(ToMark $tomarks,  $value )
+    public function show(ToMark $tomarks , $languageCode)
     {
 
          abort_unless(\Gate::allows('tomark_show'), 403);
 
-        
-
-         $value = Session::get('key');
-
-         $value = session('key');
+         $value = Session::get('storybookID');
  
-         $tomarks = ToMark::where('storybookID' , $value )->get();
-           
+         $tomarks = ToMark::where('storybookID' , $value )
+                            ->where('languageCode', $languageCode)
+                            ->orderBy('pageNo', 'ASC')
+                            ->get();
+                            
+         Session::put('lang', $languageCode);
+
+
          $testcontent = Content::where('storybookID', $value)->get();
 
          session()->forget('content');
          Session::push('content',$testcontent);
-
-            // dd($request->all());
          
         return view('admin.Tomarks.show', compact('tomarks'));
     }

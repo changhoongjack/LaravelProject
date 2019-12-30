@@ -67,6 +67,17 @@
             </li>
 
             <li class="nav-item">
+                <a href="{{ route("admin.myProfile.index") }}" class="nav-link {{ request()->is('admin/myProfile') || request()->is('admin/myProfile/*') ? 'active' : '' }}">
+                    <i class="fas fa-cogs nav-icon">
+
+                    </i>
+                    {{ trans('myProfile') }}
+                </a>
+
+                
+            </li>
+
+            <li class="nav-item">
                 <!-- <a href="{{ route("admin.products.index") }}" class="nav-link {{ request()->is('admin/products') || request()->is('admin/products/*') ? 'active' : '' }}">
                     <i class="fas fa-cogs nav-icon">
 

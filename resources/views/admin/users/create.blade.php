@@ -1,6 +1,8 @@
 @extends('layouts.admin')
 @section('content')
 
+
+
 <div class="card">
     <div class="card-header">
         {{ trans('global.create') }} {{ trans('global.user.title_singular') }}
@@ -45,6 +47,20 @@
                     {{ trans('global.user.fields.password_helper') }}
                 </p>
             </div>
+            <div class="form-group">
+                <label for="email">Gender*</label><br> 
+                <input type="radio" name="gender" value="male" checked> Male<br>
+                    <input type="radio" name="gender" value="female"> Female<br>
+                    
+            </div>
+
+            <div class="form-group">
+                <label for="email">Date of Birth*</label><br> 
+                 <input type="date" name="DOB">
+                    
+            </div>
+           
+
             <div class="form-group {{ $errors->has('roles') ? 'has-error' : '' }}">
                 <label for="roles">{{ trans('global.user.fields.roles') }}*
                     <span class="btn btn-info btn-xs select-all">Select all</span>

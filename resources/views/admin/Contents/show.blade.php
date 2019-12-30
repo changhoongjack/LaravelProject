@@ -38,9 +38,9 @@
                         {{ trans('Cover') }}
                     </th>
                     <td >
-                                <!-- ================ display image in table and onclick to zoom in to view ============= -->
-                                <img src="data:image/jpg;base64, {{ chunk_split(base64_encode($content->storybookCover)) }}" style="width:30%; height:30% ;cursor:pointer" 
-                                        onclick="onClick(this)" class="w3-hover-opacity height="100" width="100"/> 
+                                      <!-- ================ display image in table and onclick to zoom in to view ============= -->
+                                      <img src="data:image/jpg;base64, {{ ($content->storybookCover) }}" style="width:512; height:512 ;cursor:pointer" 
+                                        onclick="onClick(this)" class="w3-hover-opacity height="100" width="100"/>
 
                                         <div id="modal01" class="w3-modal" onclick="this.style.display='none'">
                                         <span class="w3-button w3-hover-red w3-xlarge w3-display-topright">&times;</span>

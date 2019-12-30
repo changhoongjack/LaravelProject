@@ -7,7 +7,7 @@ use App\Http\Requests\StoreApproveRequest;
 use App\Http\Requests\UpdateApproveRequest;
 use App\ToMark;
 use App\Content;
-use App\Storybooklibrary;
+
 
 class ToMarksApiController extends Controller
 {
@@ -20,7 +20,7 @@ class ToMarksApiController extends Controller
 
     public function store(StoreApproveRequest $request)
     {
-        return Storybooklibrary::create($request->all());
+        return Content::create($request->all());
     }
 
     public function update(UpdateApproveRequest $request, ToMark $tomark)

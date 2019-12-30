@@ -27,12 +27,29 @@
                 </tr>
                 <tr>
                     <th>
-                        {{ trans('global.user.fields.email_verified_at') }}
+                        {{ trans('Gender') }}
                     </th>
                     <td>
-                        {{ $user->email_verified_at }}
+                        {{ $user->gender }}
                     </td>
                 </tr>
+                <tr>
+                    <th>
+                        {{ trans('Date of Birth') }}
+                    </th>
+                    <td>
+                        {{ $user->DOB }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        {{ trans('Date Joined') }}
+                    </th>
+                    <td>
+                        {{ $user->created_at }}
+                    </td>
+                </tr>
+                
                 <tr>
                     <th>
                         Roles

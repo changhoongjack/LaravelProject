@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use Session;
-
+use Illuminate\Support\Facades\Request;
 use App\Http\Controllers\Controller;
 // use App\Http\Requests\MassDestroyProductRequest;
 use App\Http\Requests\StoreProductRequest;
@@ -16,11 +16,21 @@ class ContentsController extends Controller
     {
          abort_unless(\Gate::allows('content_access'), 403);
 
-         //$contents = Content::all();
-         $contents = Content::where('status','Submitted')->get();
-                    //->where('status','Submitted')
+         
+         $contents = Content::select('storybookID', 'storybookGenre', 'storybookCover',  'status')
+                    //->except('languageCode')
+                    //->groupBy('storybookID')
+                    ->where('status','Submitted')
+                    //->groupBy('storybookID','storybookTitle', 'storybookCover', 'storybookDesc', 'storybookGenre', 'dateOfCreation', 'status')
+                    ->distinct()
+                    ->get();
+         
                     
+        //  Session::put('storybookID', $storybookID);
 
+          
+
+                   
         return view('admin.Contents.index', compact('contents'));
     }
 
@@ -56,40 +66,24 @@ class ContentsController extends Controller
         return redirect()->route('admin.Contents.index');
     }
 
-    public function show(Content $content, $storybookID)
+    public function show($languageCode)
     {
-
          abort_unless(\Gate::allows('content_show'), 403);
 
-        $content = Content::where('storybookID' , $storybookID )->first();
-
-        Session::put('key', $storybookID);
-        session(['key' => $storybookID]);
+        $storybookID = Session::get('storybookID');
+        $content = Content::where('languageCode', $languageCode )
+                    ->where('storybookID', $storybookID)
+                    ->first();
+        
+        Session::put('language', $languageCode);
+        //session(['test123' => $languageCode]);
         //session()->forget('content');
         //Session::push('content',$content);
-
-         
+        //dd(session()->all());
+       
         return view('admin.Contents.show', compact('content'));
+       
+
     }
 
-
-    
-
-
-
-    // public function destroy(Product $product)
-    // {
-    //     abort_unless(\Gate::allows('content_delete'), 403);
-
-    //     $contents->delete();
-
-    //     return back();
-    // }
-
-    // public function massDestroy(MassDestroyProductRequest $request)
-    // {
-    //     Content::whereIn('id', request('ids'))->delete();
-
-    //     return response(null, 204);
-    // }
 }
